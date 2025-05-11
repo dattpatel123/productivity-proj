@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { signOut } from 'next-auth/react'; // Import signOut
 
 const useEmailStore = create((set) => ({
   emails: [],
@@ -13,7 +14,11 @@ const useEmailStore = create((set) => ({
     try {
       set({ loading: true, error: null });
       const res = await fetch('/api/emails');
-      if (!res.ok) {
+      if (res.status === 401) {
+        // Handle unauthorized specifically
+        set({ error: 'Invalid credentials. Please sign in again.', emails: [] });
+        signOut(); // Sign out the user on the frontend
+      } else if (!res.ok) {
         const errorData = await res.json();
         set({ error: errorData.error || 'Failed to fetch emails', emails: [] });
       } else {
@@ -30,6 +35,7 @@ const useEmailStore = create((set) => ({
       set({ loading: false });
     }
   },
+  resetStore: () => set({ emails: [], loading: false, error: null }), // Add reset action
 }));
 
 export default useEmailStore;

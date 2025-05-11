@@ -1,4 +1,8 @@
 @import "tailwindcss";
+/* DaisyUI plugin should be configured in the Tailwind CSS configuration file */
+@plugin "daisyui"{
+  themes: all;
+};
 
 body {
   background: var(--background);

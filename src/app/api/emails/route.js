@@ -58,7 +58,7 @@ export async function GET(request) {
   if (!session?.accessToken) {
     return new Response("Not Authenticated", { status: 401 });
   }
-
+  
   try {
     // Set up the Gmail API client with the OAuth token
     const auth = new google.auth.OAuth2();
@@ -106,6 +106,10 @@ export async function GET(request) {
     return new Response(JSON.stringify(emailDetails), { status: 200 });
   } catch (error) {
     console.error("Error fetching emails:", error); // Log the full error
+    // Check if the error is likely due to invalid credentials
+    if (error.message.includes('Invalid Credentials')) {
+      return new Response("Invalid Credentials", { status: 401 });
+    }
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }

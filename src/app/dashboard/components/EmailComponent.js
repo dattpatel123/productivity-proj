@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'; // Keep useState for selectedEmail
 import { useSession, signIn, signOut } from 'next-auth/react';
 import OpenEmail from './OpenEmail'; // Import the OpenEmail component
 import useEmailStore from '@/store/emailStore'; // Import the Zustand store hook
+import { SquareBottomDashedScissorsIcon } from 'lucide-react';
 
 export default function EmailComponent() {
   const { data: session } = useSession();
@@ -12,9 +13,10 @@ export default function EmailComponent() {
 
   // Fetch emails when the component mounts and session is available
   useEffect(() => {
-    if (!session) return; // Don't fetch emails if session is not available
+    
     if (emails.length > 0) return; // Don't fetch emails if already fetched
     fetchEmails(session);
+    
   }, [session, fetchEmails]); // Dependency array includes session and fetchEmails action
 
   const handleEmailClick = (email) => {
@@ -42,7 +44,7 @@ export default function EmailComponent() {
     return <button onClick={() => signIn('google')}>Sign In with Google</button>;
   }
 
-  // Display loading, error, or email list/detail view
+  // If session exists, display loading, error, or email list/detail view
   if (loading) {
     return <p>Loading emails...</p>;
   }
@@ -53,7 +55,7 @@ export default function EmailComponent() {
 
   return (
     <div className="p-4">
-      <button onClick={() => signOut()}>Sign Out</button>
+      <button onClick={() => { signOut(); resetStore(); }} className="btn btn-success">Sign Out</button> {/* Call signOut and resetStore */}
       <h2 className="text-2xl font-bold text-center">Inbox</h2>
 
       {selectedEmail ? (

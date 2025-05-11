@@ -21,17 +21,17 @@ export default function Dashboard() {
 
   return (
     
-
+    
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className={`bg-gray-800 text-white p-4 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
-        <button onClick={toggleSidebar} className="p-2 mb-4 hover:bg-gray-700 rounded">
-          <Menu className="text-white" />
+      <div className={`p-4 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
+        <button onClick={toggleSidebar} className="btn btn-ghost">
+          <Menu />
         </button>
-        <ul className="space-y-2">
-          
-        <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('home')}> 
-            {isOpen ? 'Home' : <Home size={20} />}
+        <ul className={`space-y-2 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
+
+        <li className="p-2 hover:bg-gray-700 rounded cursor-pointer " onClick={() => handleSectionClick('home')}> 
+            {isOpen ? 'Home' : <Home size={20} className='text-base-content'/>}
           </li>
 
           <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('email')}> 
@@ -87,7 +87,7 @@ export default function Dashboard() {
       
       
     </div>
-    /*Main */
+    
 
 
 
