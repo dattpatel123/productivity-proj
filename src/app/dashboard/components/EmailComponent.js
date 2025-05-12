@@ -3,21 +3,25 @@ import { useState, useEffect } from 'react'; // Keep useState for selectedEmail
 import { useSession, signIn, signOut } from 'next-auth/react';
 import OpenEmail from './OpenEmail'; // Import the OpenEmail component
 import useEmailStore from '@/store/emailStore'; // Import the Zustand store hook
-import { SquareBottomDashedScissorsIcon } from 'lucide-react';
+//import { useRouter } from 'next/navigation'
 
 export default function EmailComponent() {
-  const { data: session } = useSession();
+  
   // Use state and actions from the Zustand store
   const { emails, loading, error, fetchEmails } = useEmailStore();
   const [selectedEmail, setSelectedEmail] = useState(null); // State to track selected email
-
+  const { data: session, status } = useSession(); // Get session data from NextAuth
+  //const router = useRouter(); // Initialize router for redirection
   // Fetch emails when the component mounts and session is available
+ 
   useEffect(() => {
-    
-    if (emails.length > 0) return; // Don't fetch emails if already fetched
-    fetchEmails(session);
-    
-  }, [session, fetchEmails]); // Dependency array includes session and fetchEmails action
+    if (status === 'authenticated' && emails.length === 0) {
+      fetchEmails();
+    } else if (status === 'unauthenticated') {
+      // router.push('/'); // Keep commented out for now as router is commented out
+    }
+
+  }, [fetchEmails, status, emails.length]); // Dependency array includes fetchEmails action, status, and emails.length
 
   const handleEmailClick = (email) => {
     setSelectedEmail(email);
@@ -40,12 +44,11 @@ export default function EmailComponent() {
   }
 
 
-  if (!session) {
-    return <button onClick={() => signIn('google')}>Sign In with Google</button>;
-  }
+  
 
   // If session exists, display loading, error, or email list/detail view
   if (loading) {
+    
     return <p>Loading emails...</p>;
   }
 

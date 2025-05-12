@@ -11,7 +11,7 @@ const quicksand = Quicksand({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={quicksand.className} data-theme="dark">
+    <html lang="en" className={quicksand.className} data-theme="light">
       <body>
         <SessionProvider>
           {children}

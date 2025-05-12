@@ -1,13 +1,18 @@
+
+
 import { create } from 'zustand';
-import { signOut } from 'next-auth/react'; // Import signOut
+
+import {signIn, signOut, getSession } from 'next-auth/react';
+
 
 const useEmailStore = create((set) => ({
   emails: [],
   loading: true,
   error: null,
-  fetchEmails: async (session) => {
+  fetchEmails: async () => {
+    const session = await getSession();
     if (!session) {
-      set({ loading: false });
+      set({ error: 'Not authenticated', emails: [] });
       return;
     }
     
@@ -25,6 +30,7 @@ const useEmailStore = create((set) => ({
         const data = await res.json();
         if (Array.isArray(data)) {
           set({ emails: data });
+          set({ loading: false, error: null });
         } else {
           set({ error: 'Unexpected data format from API', emails: [] });
         }
