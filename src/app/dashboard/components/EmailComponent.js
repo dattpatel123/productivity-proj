@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react'; // Keep useState for selectedEmail
 import { useSession, signIn, signOut } from 'next-auth/react';
 import OpenEmail from './OpenEmail'; // Import the OpenEmail component
 import useEmailStore from '@/store/emailStore'; // Import the Zustand store hook
-//import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+// fix signing out with router
 
 export default function EmailComponent() {
   
@@ -11,9 +12,9 @@ export default function EmailComponent() {
   const { emails, loading, error, fetchEmails } = useEmailStore();
   const [selectedEmail, setSelectedEmail] = useState(null); // State to track selected email
   const { data: session, status } = useSession(); // Get session data from NextAuth
-  //const router = useRouter(); // Initialize router for redirection
+  const router = useRouter(); // Initialize router for redirection
   // Fetch emails when the component mounts and session is available
- 
+  console.log(session)
   useEffect(() => {
     if (status === 'authenticated' && emails.length === 0) {
       fetchEmails();
@@ -30,6 +31,11 @@ export default function EmailComponent() {
   const handleBackClick = () => {
     setSelectedEmail(null);
   };
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' }); // Sign out and redirect to the login page
+    resetStore();
+    useEmailStore.setState({ loading: false });
+  }
   const formatTimestamp = (timestamp) => {
     const formattedDate = new Date(timestamp).toLocaleString("en-US", {
       weekday: "short",  // Mon, Tue, Wed...
@@ -43,12 +49,12 @@ export default function EmailComponent() {
     return formattedDate
   }
 
-
   
-
+  
+  
   // If session exists, display loading, error, or email list/detail view
-  if (loading) {
-    
+  if (loading && emails.length === 0) {
+
     return <p>Loading emails...</p>;
   }
 
@@ -58,10 +64,10 @@ export default function EmailComponent() {
 
   return (
     <div className="p-4">
-      <button onClick={() => { signOut(); resetStore(); }} className="btn btn-success">Sign Out</button> {/* Call signOut and resetStore */}
+      <button onClick={handleSignOut} className="btn btn-success">Sign Out</button> {/* Call signOut and resetStore */}
       <h2 className="text-2xl font-bold text-center">Inbox</h2>
 
-      {selectedEmail ? (
+      {selectedEmail ? (  
         // Render OpenEmail component if an email is selected
         <OpenEmail email={selectedEmail} onBackClick={handleBackClick} formatTimestamp={formatTimestamp}/>
       ) : (
@@ -69,8 +75,9 @@ export default function EmailComponent() {
         emails.length === 0 ? (
           <p>No emails found</p>
         ) : (
+          
           <div className="space-y-5 mt-7">
-
+            <button onClick={fetchEmails} className="btn btn-success">Refresh</button> {/* Call signOut and resetStore */}
           {emails.map((email) => (
             <div
               key={email.id}

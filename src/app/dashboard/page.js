@@ -1,15 +1,33 @@
 'use client';
 
-import { useState } from 'react';
-import { Home, Menu, Mail, Calendar, List, FileText} from 'lucide-react';
+import { useState, useEffect } from 'react'; // Import useEffect
+import { Home, Menu, Mail, Calendar, List, FileText, Router} from 'lucide-react';
 import '../globals.css'
 import HomeComponent from './components/HomeComponent';
 import EmailComponent from './components/EmailComponent';  
-  
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation'; // Import useRouter
+
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedSection, setSelectedSection] = useState('');
+  const { data: session, status } = useSession();
+  const router = useRouter(); // Initialize router
+
+  //Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/');
+    }
+  }, [status, router]); // Dependency array includes status and router
+  
+  
+
+  // Show loading state while session is loading
+  if (status === 'loading') {
+    return <p>Loading...</p>; // Or a spinner component
+  }
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -20,8 +38,8 @@ export default function Dashboard() {
   };
 
   return (
-    
-    
+
+
     <div className="flex h-screen">
       {/* Sidebar */}
       <div className={`p-4 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
