@@ -5,6 +5,7 @@ import { Home, Menu, Mail, Calendar, List, FileText, Router} from 'lucide-react'
 import '../globals.css'
 import HomeComponent from './components/HomeComponent';
 import EmailComponent from './components/EmailComponent';  
+import CalendarComponent from './components/CalendarComponent';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation'; // Import useRouter
 
@@ -36,38 +37,38 @@ export default function Dashboard() {
   const handleSectionClick = (section) => {
     setSelectedSection(section);
   };
-
+  const iconSize = 20; // Set the icon size
   return (
 
 
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className={`p-4 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
-        <button onClick={toggleSidebar} className="btn btn-ghost">
-          <Menu />
-        </button>
-        <ul className={`space-y-2 ${isOpen ? 'w-64' : 'w-16'} transition-all`}>
+      <div className={`p-4 ${isOpen ? 'w-35' : 'w-20'} transition-all duration-400 ease-in-out flex flex-col justify-center space-y-3 bg-black`}>
+        
+          <button onClick={toggleSidebar} className={`p-2 btn btn-ghost flex justify-center rounded`}>
+            {isOpen ? <Menu size={iconSize} /> : <Menu size={iconSize} />}
+          </button>
 
-        <li className="p-2 hover:bg-gray-700 rounded cursor-pointer " onClick={() => handleSectionClick('home')}> 
-            {isOpen ? 'Home' : <Home size={20} className='text-base-content'/>}
-          </li>
+          <button className={`p-2 btn btn-ghost rounded cursor-pointer ${isOpen ? 'flex justify-center' : 'flex justify-center'}`} onClick={() => handleSectionClick('home')}>
+            {isOpen ? 'Home' : <Home size={iconSize} className=''/>}
+          </button>
 
-          <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('email')}> 
-            {isOpen ? 'Email' : <Mail size={20} />}
-          </li>
+          <button className={`p-2 btn btn-ghost rounded cursor-pointer ${isOpen ? '' : 'flex justify-center'}`} onClick={() => handleSectionClick('email')}>
+            {isOpen ? 'Email' : <Mail size={iconSize} />}
+          </button>
 
-          <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('calendar')}> 
-            {isOpen ? 'Calendar' : <Calendar size={20} />}
-          </li>
+          <button className={`p-2 btn btn-ghost rounded cursor-pointer ${isOpen ? '' : 'flex justify-center'}`} onClick={() => handleSectionClick('calendar')}>
+            {isOpen ? 'Calendar' : <Calendar size={iconSize} />}
+          </button>
 
-          <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('todo')}> 
-          {isOpen ? 'Todo' : <List size={20} />}
-          </li>
+          <button className={`p-2 btn btn-ghost rounded cursor-pointer ${isOpen ? '' : 'flex justify-center'}`} onClick={() => handleSectionClick('todo')}>
+            {isOpen ? 'Todo' : <List size={iconSize} />}
+          </button>
 
-          <li className="p-2 hover:bg-gray-700 rounded cursor-pointer" onClick={() => handleSectionClick('notes')}> 
-          {isOpen ? 'Notes' : <FileText size={20} />}
-          </li>
-        </ul>
+          <button className={`p-2 btn btn-ghost rounded cursor-pointer ${isOpen ? '' : 'flex justify-center'}`} onClick={() => handleSectionClick('notes')}>
+            {isOpen ? 'Notes' : <FileText size={iconSize} />}
+          </button>
+        
       </div>
 
       {/* Main Content */}
@@ -83,8 +84,7 @@ export default function Dashboard() {
 
         {selectedSection === 'calendar' && (
           <div>
-            <h2>Calendar</h2>
-            <p>This is where calendar.</p>
+            <CalendarComponent />
           </div>
         )}
 

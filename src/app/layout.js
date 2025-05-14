@@ -10,9 +10,10 @@ const quicksand = Quicksand({
   subsets: ['latin'],
 });
 
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={quicksand.className} data-theme="light">
+    <html lang="en" className={quicksand.className} data-theme="dark">
       <body>
         <SessionProvider>
           {children}
