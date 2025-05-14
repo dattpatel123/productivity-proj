@@ -15,9 +15,10 @@ export default function Home() {
 
       
       <div className="flex items-center justify-center h-screen">
-        <h1 className="text-black text-center text-align"> login page</h1> 
-        <button onClick={() => signIn('google', {callbackUrl:'/dashboard'})} className="btn btn-success">  
-        </button>
+        <h1 className="text-black text-center text-align"></h1> 
+        <button onClick={() => signIn('google', {callbackUrl:'/dashboard'})} className="btn btn-neutral">  
+        Login</button>
+        
       </div>
     
   );

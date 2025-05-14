@@ -3,6 +3,7 @@
 
 import { Quicksand } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
+import './globals.css';
 
 const quicksand = Quicksand({
   weight: '400',
