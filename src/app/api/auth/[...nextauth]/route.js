@@ -14,22 +14,18 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, profile }) {
+      // Persist the OAuth access_token and the user id to the JWT right after signin
       if (account) {
-        token.accessToken = account.access_token;  // Save the access token to the JWT
-        token.accessTokenExpires = Date.now() + account.expires_in * 1000;
-        
+        token.accessToken = account.access_token;
+        token.id = account.providerAccountId; // Store the provider's user ID in the token
       }
-      // Check if token has expired
-      if (Date.now() < token.accessTokenExpires) {
-        return token; // Still valid
-      }
-
-      // If the token is expired or no new account was provided, return the existing token
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken;  // Add access token to session
+      // Send properties to the client, such as an access_token and user id from a JWT
+      session.accessToken = token.accessToken;
+      session.user.id = token.id; // Add the user ID from the token to the session user object
       return session;
     },
   },
