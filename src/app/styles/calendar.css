@@ -1,0 +1,9 @@
+.rbc-today {
+    background-color: rgb(27, 26, 26);
+}
+.rbc-calendar{
+    background-color: black;
+}
+.rbc-day-slot .rbc-time-slot {
+    border-top: 1px solid #000000;
+}
