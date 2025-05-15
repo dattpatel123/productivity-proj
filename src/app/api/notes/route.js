@@ -35,7 +35,8 @@ export async function POST(request) {
 
   const userId = session.user.id;
   const { title, content } = await request.json();
-
+  console.log('session.user.id:', session.user.id, 'Type:', typeof session.user.id);
+  console.log(session);
   if (!title || !content) {
     return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
   }

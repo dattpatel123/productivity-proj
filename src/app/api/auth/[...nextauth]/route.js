@@ -14,18 +14,22 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
-      // Persist the OAuth access_token and the user id to the JWT right after signin
+    async jwt({ token, user, account, profile }) {
+      // Add the Supabase user's UUID to the token
+      if (user) {
+        token.sub = user.id; // Supabase user's UUID is in user.id
+      }
+      // Persist the OAuth access_token and the provider user id to the JWT right after signin
       if (account) {
         token.accessToken = account.access_token;
-        token.id = account.providerAccountId; // Store the provider's user ID in the token
+        // token.id = account.providerAccountId; // We don't need the provider ID in the token for RLS
       }
       return token;
     },
     async session({ session, token }) {
-      // Send properties to the client, such as an access_token and user id from a JWT
+      // Send properties to the client, such as an access_token and user id (Supabase UUID)
       session.accessToken = token.accessToken;
-      session.user.id = token.id; // Add the user ID from the token to the session user object
+      session.user.id = token.sub; // Use the Supabase UUID from token.sub
       return session;
     },
   },

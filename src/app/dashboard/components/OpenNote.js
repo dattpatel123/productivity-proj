@@ -80,7 +80,7 @@ const OpenNote = ({ note, setSelectedNote }) => {
             }} className='btn btn-danger mt-20 ml-4'> Delete Note</button>
           )}
     
-    
+          
         </div>
       )
 
