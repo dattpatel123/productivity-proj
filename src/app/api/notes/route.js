@@ -46,7 +46,7 @@ export async function POST(request) {
       { user_id: userId, title: title, content: content }
     ])
     .select(); // Select the inserted row
-
+    
   if (error) {
     console.error('Error creating note:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -1,0 +1,20 @@
+/* Dark mode for Quill toolbar */
+/* Targeting buttons directly by type */
+.ql-toolbar button[type='button']{
+    background-color: white;  /* Dark button */
+    
+    border-radius: 10px;
+    margin-right: 8px; /* Add space to the right of each button */
+  }
+
+
+.quill {
+    display: block; /* Ensure the editor takes up its own space */
+    height: 500px;
+    width: 1000;
+}
+
+.ql-header{
+    background-color: white;
+    border-radius: 4px;
+}
