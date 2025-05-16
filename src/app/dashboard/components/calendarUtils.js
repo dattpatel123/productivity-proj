@@ -2,7 +2,7 @@
 
 export const handleEventClick = (event, e, setSelectedEvent, setCardPosition, isCardVisible, setIsCardVisible) => {
     if(isCardVisible){
-        setIsCardVisible(false); 
+        setIsCardVisible(false);
         setSelectedEvent(null);
         return;
     }
@@ -34,4 +34,3 @@ export const handleEventClick = (event, e, setSelectedEvent, setCardPosition, is
     setCardPosition({ top: newTop, left: newLeft });
     setIsCardVisible(true);
 };
-
