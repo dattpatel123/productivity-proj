@@ -35,8 +35,10 @@ export default function CardComponent({ event, onClose, position, onEdit }) {
                 <h2 className="card-title">{event.title}</h2>
                 <p>Start: {moment(event.start).format('LLL')}</p>
                 <p>End: {moment(event.end).format('LLL')}</p>
-                
+                {console.log(event.start)}
+                {console.log(event.end)}
                 <p>{event.note}</p>
+                <p>{event.allDay}</p>
             </div>
             <div className="card-actions justify-end">
                 <button className='btn btn-secondary' onClick={onEdit}>Edit</button>

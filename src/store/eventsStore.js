@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import moment from 'moment';
 
 const useEventsStore = create((set) => ({
   events: [],
@@ -13,15 +14,19 @@ const useEventsStore = create((set) => ({
       }
       const data = await response.json();
       // Format event dates from strings to Date objects and include note, allDay, and id
+      console.log(data)
       const formattedEvents = data.map(event => ({
+        
         id: event.id, // Include the id
-        title: event.title,
+        title: event.title, 
         start: new Date(event.start),
         end: new Date(event.end),
-        allDay: event.allDay,
+        allDay: event.allDay, // Include the allDay property
         note: event.note,
-      }));
+      }));  
       set({ events: formattedEvents });
+      console.log('Fetched events:', formattedEvents);
+      
     } catch (error) {
       console.error('Error fetching events:', error);
     }
