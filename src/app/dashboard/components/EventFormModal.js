@@ -1,99 +1,115 @@
 import React, { useState, useEffect } from 'react';
 
-const EventFormModal = ({ slotInfo, onClose, onSubmit }) => {
+const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, eventToEdit }) => {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [allDay, setAllDay] = useState(false);
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
 
+
   useEffect(() => {
-    if (slotInfo) {
+    if (eventToEdit) {
+      setTitle(eventToEdit.title || '');
+      setNote(eventToEdit.note || '');
+      setAllDay(eventToEdit.allDay || false);
+      setStart(eventToEdit.start ? new Date(eventToEdit.start).toISOString() : '');
+      setEnd(eventToEdit.end ? new Date(eventToEdit.end).toISOString() : '');
+    } else if (slotInfo) {
       // Pre-fill start and end times from selected slot
       setStart(slotInfo.start.toISOString());
       setEnd(slotInfo.end.toISOString());
-      // Set allDay based on the slot selection (if it's a full day slot)
-      // This might need refinement based on how react-big-calendar provides this info
-      const duration = slotInfo.end.getTime() - slotInfo.start.getTime();
-      const twentyFourHours = 24 * 60 * 60 * 1000;
-      if (duration >= twentyFourHours) {
-        setAllDay(true);
-      } else {
-        setAllDay(false);
-      }
+      // Reset other fields for new event
+      setTitle('');
+      setNote('');
+      setAllDay(false);
     }
-  }, [slotInfo]);
+  }, [slotInfo, eventToEdit]);
+
+  useEffect(() => {
+    const modalElement = document.getElementById('New_Event_Modal');
+    if (isOpen) {
+      modalElement.showModal();
+    } else {
+      modalElement.close();
+    }
+  }, [isOpen]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const newEvent = {
+    e.preventDefault(); // Prevent default form submission
+    const eventData = {
       title,
       note,
       start,
       end,
       allDay,
     };
-    onSubmit(newEvent);
+
+    if (eventToEdit) {
+      // Update existing event
+      console.log(eventToEdit)
+      const updatedEvent = { ...eventToEdit, ...eventData };
+      //console.log('Updating Event:', updatedEvent);
+      updateEvent(updatedEvent);
+    } else {
+      // Add new event
+      const newEvent = eventData;
+      console.log('Adding New Event:', newEvent);
+      addEvent(newEvent);
+    }
+
+    onClose(); // Close modal after submit
   };
 
   return (
-    
+    // Input: Title, Note, Start, End, All Day?
+    //
     <div className="">
-      <input type="text" placeholder="Type here" className="input" />
-      <div className="">
-        <h2>Add New Event</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="title">Title:</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="note">Note:</label>
-            <textarea
-              id="note"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="start">Start:</label>
-            <input
-              type="datetime-local"
-              id="start"
-              value={start.substring(0, 16)} // Format for datetime-local input
-              onChange={(e) => setStart(new Date(e.target.value).toISOString())}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="end">End:</label>
-            <input
-              type="datetime-local"
-              id="end"
-              value={end.substring(0, 16)} // Format for datetime-local input
-              onChange={(e) => setEnd(new Date(e.target.value).toISOString())}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="allDay">All Day:</label>
-            <input
-              type="checkbox"
-              id="allDay"
-              checked={allDay}
-              onChange={(e) => setAllDay(e.target.checked)}
-            />
-          </div>
-          <button type="submit">Add Event</button>
-          <button type="button" onClick={onClose}>Cancel</button>
-        </form>
-      </div>
+
+      <dialog id="New_Event_Modal" className="modal" >
+        <div className="modal-box w-60 flex flex-col items-center justify-center gap-2">
+
+            <div className='p-1'>{eventToEdit ? 'Edit Event' : 'Add a new Event'}</div>
+
+            <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <textarea
+                placeholder="Note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className="textarea textarea-bordered w-full max-w-xs"
+              ></textarea>
+              <input
+                type="datetime-local"
+                value={start}
+                onChange={(e) => setStart(e.target.value)}
+                className="input input-bordered w-full max-w-xs"
+              />
+              <input
+                type="datetime-local"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+                className="input input-bordered w-full max-w-xs"
+              />
+              {/* <div className='space-x-2'>
+                <label htmlFor="allDay">All Day:</label>
+                <input type="checkbox" id="allDay" checked={allDay} onChange={(e) => setAllDay(e.target.checked)}/>
+              </div> */}
+              <button type="submit" className="btn">{eventToEdit ? 'Update Event' : 'Add Event'}</button>
+              <button type="button" className="btn" onClick={onClose}>Close</button>
+            </form>
+
+        </div>
+      </dialog>
+
+
+
     </div>
   );
 };

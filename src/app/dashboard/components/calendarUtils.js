@@ -29,7 +29,7 @@ export const handleEventClick = (event, e, setSelectedEvent, setCardPosition, is
      if (newTop < window.scrollY) {
       newTop = window.scrollY;
     }
-
+    console.log(event)
     setSelectedEvent(event);
     setCardPosition({ top: newTop, left: newLeft });
     setIsCardVisible(true);

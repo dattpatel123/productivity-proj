@@ -1,8 +1,16 @@
 import React from 'react';
 import moment from 'moment';
 import { X } from 'lucide-react';
+import useEventsStore from '@/store/eventsStore';
 
-export default function CardComponent({ event, onClose, position }) {
+export default function CardComponent({ event, onClose, position, onEdit }) {
+    const { deleteEvent } = useEventsStore();
+
+    const handleDelete = async () => {
+        await deleteEvent(event.id);
+        onClose(); // Close the card after deleting the event
+    };
+
     return (
         <div className="card card-dash bg-base-100 w-96" style={{ position: 'absolute', top: position.top, left: position.left, zIndex: 1000, animation: 'bubble-in 0.3s ease-out forwards', transformOrigin: 'top center', padding: '1rem' }}>
             <style jsx>{`
@@ -27,7 +35,12 @@ export default function CardComponent({ event, onClose, position }) {
                 <h2 className="card-title">{event.title}</h2>
                 <p>Start: {moment(event.start).format('LLL')}</p>
                 <p>End: {moment(event.end).format('LLL')}</p>
-                <p>{event.title}</p>
+                
+                <p>{event.note}</p>
+            </div>
+            <div className="card-actions justify-end">
+                <button className='btn btn-secondary' onClick={onEdit}>Edit</button>
+                <button className='btn btn-primary' onClick={handleDelete}>Delete</button>
             </div>
         </div>
     );
