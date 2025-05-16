@@ -45,8 +45,14 @@ const useEventsStore = create((set) => ({
         return;
       }
       const newEvent = await response.json();
+      // Convert start and end to Date objects before adding to state
+      const formattedNewEvent = {
+        ...newEvent,
+        start: newEvent.start ? new Date(newEvent.start) : null,
+        end: newEvent.end ? new Date(newEvent.end) : null,
+      };
       set((state) => ({
-        events: [...state.events, newEvent],
+        events: [...state.events, formattedNewEvent],
       }));
     } catch (error) {
       console.error('Error adding event:', error);

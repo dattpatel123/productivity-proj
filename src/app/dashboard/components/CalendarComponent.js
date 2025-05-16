@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CardComponent from './CardComponent';
 import EventFormModal from './EventFormModal'; // Import the new modal component
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -20,7 +20,7 @@ const CalendarComponent = ({  }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
   const [eventToEdit, setEventToEdit] = useState(null); // State for the event being edited
-  const onView = (newView) => setView(newView);
+  const onView = useCallback((newView) => setView(newView), [setView]);
 
 
   // Fetch events when the component mounts
