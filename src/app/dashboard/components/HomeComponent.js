@@ -20,8 +20,7 @@ export default function HomeComponent(){
 
   return (
     <div>
-      <button className='btn btn-accent' onClick={fetchEvents}>Fetch events</button>
-      <button className='btn btn-accent' >Add Eveent</button>
+      
        
     </div>
   )

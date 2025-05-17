@@ -1,9 +1,32 @@
-.rbc-today {
-    background-color: rgb(27, 26, 26);
+.rbc-today{
+    background-color: var(--color-accent-content);
 }
 .rbc-calendar{
-    background-color: black;
+    background-color: var(--color-base-100);
 }
 .rbc-day-slot .rbc-time-slot {
     border-top: 1px solid #000000;
+}
+.rbc-btn-group {
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+
+}
+.rbc-btn-group button{
+    color: var(--color-base-content)
+    
+}
+.rbc-btn-group .rbc-active{
+    color: var(--color-neutral);
+    hover{
+        color: var(--color-neutral);
+    }   
+}
+.rbc-day-bg.rbc-off-range-bg{
+    background-color: var(--color-base-300);
+}
+
+.rbc-event{
+    background-color: var(--color-info);
+    color: var(--color-info-content);
 }

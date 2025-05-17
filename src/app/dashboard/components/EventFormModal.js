@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import moment from 'moment';
 const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, eventToEdit }) => {
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
@@ -7,16 +7,7 @@ const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, even
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
 
-  // Format Date object to 'YYYY-MM-DDTHH:mm' string for input value
-  const formatToDatetimeLocal = (date) => {
-    if (!date) return '';
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  };
+  
 
   // On mount or when editing or slotInfo changes, set form fields as strings
   useEffect(() => {
@@ -24,14 +15,19 @@ const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, even
       setTitle(eventToEdit.title || '');
       setNote(eventToEdit.note || '');
       setAllDay(eventToEdit.allDay || false);
-      setStart(eventToEdit.start ? formatToDatetimeLocal(new Date(eventToEdit.start)) : '');
-      setEnd(eventToEdit.end ? formatToDatetimeLocal(new Date(eventToEdit.end)) : '');
+      console.log(eventToEdit);
+      setStart(eventToEdit?.start.toISOString().slice(0, 16));
+      setEnd(eventToEdit?.end.toISOString().slice(0, 16));
+      
     } else if (slotInfo) {
+      console.log(moment(slotInfo.start).format('YYYY-MM-DDTHH:MM'));
+      console.log(moment(slotInfo.end).format('YYYY-MM-DDTHH:MM'));
       setTitle('');
       setNote('');
       setAllDay(false);
-      setStart(slotInfo.start ? formatToDatetimeLocal(new Date(slotInfo.start)) : '');
-      setEnd(slotInfo.end ? formatToDatetimeLocal(new Date(slotInfo.end)) : '');
+      setStart(slotInfo?moment(slotInfo.start).format('YYYY-MM-DDTHH:MM'):'');
+      setEnd(slotInfo?moment(slotInfo.end).format('YYYY-MM-DDTHH:MM'):'');
+      
     } else {
       // Clear fields if nothing
       setTitle('');
@@ -40,9 +36,10 @@ const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, even
       setStart('');
       setEnd('');
     }
-  }, [slotInfo, eventToEdit]);
+  }, [eventToEdit, slotInfo]);
 
   useEffect(() => {
+    console.log(start, end);
     const modalElement = document.getElementById('New_Event_Modal');
     if (isOpen) {
       modalElement.showModal();

@@ -12,7 +12,7 @@ import useEventsStore from '@/store/eventsStore';
 const localizer = momentLocalizer(moment);
 
 const CalendarComponent = ({  }) => {
-  const { events, fetchEvents, addEvent, updateEvent } = useEventsStore();
+  const { events, fetchEvents, addEvent, updateEvent, loading } = useEventsStore();
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isCardVisible, setIsCardVisible] = useState(false);
   const [cardPosition, setCardPosition] = useState({ top: 0, left: 0 });
@@ -20,13 +20,17 @@ const CalendarComponent = ({  }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedSlotInfo, setSelectedSlotInfo] = useState(null);
   const [eventToEdit, setEventToEdit] = useState(null); // State for the event being edited
+  const [date, setDate] = useState(new Date()); 
+  
   const onView = useCallback((newView) => setView(newView), [setView]);
-
+  const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
 
   // Fetch events when the component mounts
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]); // Empty dependency array means this runs once on mount
+
+  
 
   const handleCloseCard = () => {
     setIsCardVisible(false);
@@ -45,31 +49,39 @@ const CalendarComponent = ({  }) => {
     setIsCardVisible(false); // Close the card when opening the modal
   };
 
-  
+  const handleSelectSlot = (slotInfo) => { 
+    setIsModalVisible(true);
+    setSelectedSlotInfo(slotInfo);
+
+    setEventToEdit(null); // Ensure eventToEdit is null for new events
+  }
   
   
   
   return (
     <div>
-
-      <Calendar
+      { loading &&
+        <div className="flex justify-center items-center h-screen">
+          <span className="loading loading-infinity loading-xl w-30 c"></span>
+        </div>
+      
+      }
+      {!loading && <Calendar
         localizer={localizer}
-        events={events} // Use state events
+        events={events} // Use a shallow copy of state events to ensure re-render on update
         startAccessor="start"
         endAccessor="end"
         style={{ height: '80vh'}}
         defaultView= {'month'}
         view={view}
+        date={date}
         onView={onView}
+        onNavigate={onNavigate}
         selectable={true} // Enable slot selection
         onSelectEvent={(event, e) => handleEventClick(event, e, setSelectedEvent, setCardPosition, isCardVisible, setIsCardVisible)}
-        onSelectSlot={(slotInfo) => {
-          setIsModalVisible(true);
-          setSelectedSlotInfo(slotInfo);
-          setEventToEdit(null); // Ensure eventToEdit is null for new events
-          console.log('slotInfo', slotInfo);
-        }} // Set state to show modal and store slot info
-      />
+        onSelectSlot={(slotInfo) => {handleSelectSlot(slotInfo); console.log(slotInfo)}} // Set state to show modal and store slot info
+      />}
+
       {isCardVisible && selectedEvent && (
         <CardComponent event={selectedEvent} onClose={handleCloseCard} position={cardPosition} onEdit={() => handleEditEvent(selectedEvent)} />
       )}

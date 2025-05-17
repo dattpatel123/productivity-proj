@@ -55,7 +55,12 @@ export default function EmailComponent() {
   // If session exists, display loading, error, or email list/detail view
   if (loading && emails.length === 0) {
 
-    return <p>Loading emails...</p>;
+      return (
+        
+        <div className="flex justify-center items-center h-screen">
+          <span className="loading loading-infinity loading-xl w-30 c"></span>
+        </div>
+      )
   }
 
   if (error) {
@@ -64,7 +69,7 @@ export default function EmailComponent() {
 
   return (
     <div className="p-4">
-      <button onClick={handleSignOut} className="btn btn-success">Sign Out</button> {/* Call signOut and resetStore */}
+      <button onClick={handleSignOut} className="btn btn-error">Sign Out</button> {/* Call signOut and resetStore */}
       <h2 className="text-2xl font-bold text-center">Inbox</h2>
 
       {selectedEmail ? (  
@@ -81,8 +86,9 @@ export default function EmailComponent() {
           {emails.map((email) => (
             <div
               key={email.id}
-              className="p-2 border border-gray-300 hover:bg-gray-300 rounded-md space-y-2"
+              className="cursor-pointer p-4 hover:bg-base-200 flex flex-col rounded-lg border-2 border-primary-content"
               onClick={() => handleEmailClick(email)}
+
             >
               <div className='flex justify-between'>
                 <p><strong>Sender:</strong> {email.sender}</p>

@@ -56,9 +56,9 @@ export default function Dashboard() {
   return (
 
 
-    <div className="flex h-screen">
+    <div className="flex h-screen"> {/* Added h-screen and min-h-screen */}
       {/* Sidebar */}
-      <div className={`p-4 ${isOpen ? 'w-35' : 'w-20'} transition-all duration-400 ease-in-out flex flex-col justify-center space-y-3 bg-black`}>
+      <div className={`p-4 ${isOpen ? 'w-35' : 'w-20'} transition-all duration-400 ease-in-out flex flex-col justify-center space-y-3 bg-base-300`}> {/* Removed sticky and top-0 */}
 
           <button onClick={toggleSidebar} className={`p-2 btn btn-ghost flex justify-center rounded`}>
             {isOpen ? <Menu size={iconSize} /> : <Menu size={iconSize} />}
@@ -87,7 +87,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-4"> {/* Removed relative positioning */}
+      <div className="flex-1 p-4 overflow-y-auto"> {/* Added overflow-y-auto */}
           
           
           {/* Container for Now Playing Button and Widget */}

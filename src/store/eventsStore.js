@@ -3,9 +3,11 @@ import moment from 'moment';
 
 const useEventsStore = create((set) => ({
   events: [],
+  loading: true,
   setEvents: (events) => set({ events }),
 
   fetchEvents: async () => {
+    
     try {
       const response = await fetch('/api/events'); // Assuming a GET endpoint for fetching events
       if (!response.ok) {
@@ -24,8 +26,9 @@ const useEventsStore = create((set) => ({
         allDay: event.allDay, // Include the allDay property
         note: event.note,
       }));  
-      set({ events: formattedEvents });
-      console.log('Fetched events:', formattedEvents);
+      set({ events: formattedEvents, loading: false });
+      
+      
       
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -73,9 +76,15 @@ const useEventsStore = create((set) => ({
       }
       const data = await response.json();
       console.log(data.message); // Log success message
+      // Convert start and end to Date objects before updating state
+      const formattedUpdatedEvent = {
+        ...updatedEvent,
+        start: updatedEvent.start ? new Date(updatedEvent.start) : null,
+        end: updatedEvent.end ? new Date(updatedEvent.end) : null,
+      };
       set((state) => ({
         events: state.events.map((event) =>
-          event.id === updatedEvent.id ? updatedEvent : event
+          event.id === formattedUpdatedEvent.id ? formattedUpdatedEvent : event
         ),
       }));
     } catch (error) {
