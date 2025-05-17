@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useCallback } from 'react';
 import CardComponent from './CardComponent';
 import EventFormModal from './EventFormModal'; // Import the new modal component
@@ -80,6 +82,7 @@ const CalendarComponent = ({  }) => {
         selectable={true} // Enable slot selection
         onSelectEvent={(event, e) => handleEventClick(event, e, setSelectedEvent, setCardPosition, isCardVisible, setIsCardVisible)}
         onSelectSlot={(slotInfo) => {handleSelectSlot(slotInfo); console.log(slotInfo)}} // Set state to show modal and store slot info
+        
       />}
 
       {isCardVisible && selectedEvent && (

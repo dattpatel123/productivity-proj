@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 const EventFormModal = ({ isOpen, slotInfo, onClose, addEvent, updateEvent, eventToEdit }) => {

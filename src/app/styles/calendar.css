@@ -3,6 +3,7 @@
 }
 .rbc-calendar{
     background-color: var(--color-base-100);
+    margin-top: 4rem;
 }
 .rbc-day-slot .rbc-time-slot {
     border-top: 1px solid #000000;

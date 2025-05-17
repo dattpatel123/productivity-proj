@@ -1,3 +1,4 @@
+'use client'; // This is a client component
 import React, { useState, useEffect } from 'react';
 import OpenNote from './OpenNote';
 import useNotesStore from '@/store/notesStore';
