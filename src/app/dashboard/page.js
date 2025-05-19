@@ -43,8 +43,8 @@ export default function Dashboard() {
   const iconSize = 20; // Set the icon size
   return (
 
-    <div>
-    
+    <div className='flex justify-center items-center h-screen'>
+    Welcome
     </div>
       
 

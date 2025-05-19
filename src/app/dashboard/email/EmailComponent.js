@@ -19,7 +19,7 @@ export default function EmailComponent() {
     if (status === 'authenticated' && emails.length === 0) {
       fetchEmails();
     } else if (status === 'unauthenticated') {
-      // router.push('/'); // Keep commented out for now as router is commented out
+       router.push('/'); // Keep commented out for now as router is commented out
     }
 
   }, [fetchEmails, status, emails.length]); // Dependency array includes fetchEmails action, status, and emails.length

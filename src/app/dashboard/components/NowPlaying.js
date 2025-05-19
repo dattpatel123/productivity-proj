@@ -6,7 +6,7 @@ const NowPlaying = () => {
 
     return (
     <div>
-        <button onClick={() => setIsOpen(!isOpenll)} className='p-2 btn btn-info rounded cursor-pointer'>
+        <button onClick={() => setIsOpen(!isOpen)} className='p-2 btn btn-info rounded cursor-pointer'>
         Show Now Playing</button>
         {isOpen && 
             <div className='bg-gray-800 text-white rounded shadow-lg'>   

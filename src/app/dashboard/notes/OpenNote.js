@@ -37,15 +37,19 @@ const OpenNote = ({ note, setSelectedNote }) => {
     }, [note, title, value]);
     
       return (
-        <div>
+        <div className='space-y-2 p-2'>
           
           {/* Title Input */}
+          <div className='flex justify-center'>
           <input 
             type="text" 
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
             placeholder="Note Title" 
+            className='input'
           />
+          </div>
+          {/* Note Content */}
           {/* Quill Editor */}
           <ReactQuill 
             value={value} 
@@ -54,33 +58,34 @@ const OpenNote = ({ note, setSelectedNote }) => {
             modules={modules}
             formats={formats}
           />
-          <button onClick={() => {
-            console.log('Title:', title);
-            console.log('Content:', value);
-            if (!title || !value) {
-              alert('Title and content are required.');
-              return;
-            }
-
-            if (note && note.id) {
-              // Existing note, call update
-              updateNote(note.id, title, value);
-            } else {
-              // New note, call add
-              addNote(title, value);
-            }
-          }} className='btn btn-accent mt-20'> Save Note</button>
-          
-          {note && note.id && (
+          <div className='flex justify-start space-x-2  mt-20'>
             <button onClick={async () => {
-              if (confirm('Are you sure you want to delete this note?')) {
-                await deleteNote(note.id);
-                setSelectedNote(null); // Close the editor after deletion
+              console.log('Title:', title);
+              console.log('Content:', value);
+              if (!title || !value) {
+                alert('Title and content are required.');
+                return;
               }
-            }} className='btn btn-danger mt-20 ml-4'> Delete Note</button>
-          )}
+
+              if (note && note.id) {
+                // Existing note, call update
+                await updateNote(note.id, title, value);
+              } else {
+                // New note, call add
+                await addNote(title, value);
+              }
+            }} className='btn btn-accent'>{note ? "Update Note" : "Create New Note"}
+            </button>
+            {note && note.id && (
+              <button onClick={async () => {
+                if (confirm('Are you sure you want to delete this note?')) {
+                  await deleteNote(note.id);
+                  setSelectedNote(null); // Close the editor after deletion
+                }
+              }} className='btn btn-error'> Delete Note</button>
+            )}
     
-          
+          </div>
         </div>
       )
 
