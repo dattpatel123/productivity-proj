@@ -17,7 +17,8 @@ export const authOptions = {
     async jwt({ token, user, account, profile }) {
       // Add the Supabase user's UUID to the token
       if (user) {
-        token.sub = user.id; // Supabase user's UUID is in user.id
+        
+        token.userId = user.id; // Supabase user's UUID is in user.id
       }
       // Persist the OAuth access_token and the provider user id to the JWT right after signin
       if (account) {
