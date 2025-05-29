@@ -1,9 +1,10 @@
-import React from 'react'
-import ReactQuill from 'react-quill-new';
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css'; // Import the Quill styles
 import '../../styles/editor.css'; // Import custom editor styles
 import useNotesStore from '@/store/notesStore';
-import { useState, useEffect } from 'react';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 const modules = {
   toolbar: [
@@ -19,7 +20,7 @@ const modules = {
 const formats = [
   'header',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'list', 'bullet', 'indent',
+  'list', 'indent',
   'link', 'image','size'
 ];
 
