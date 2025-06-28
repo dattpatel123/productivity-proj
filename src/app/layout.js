@@ -1,9 +1,7 @@
-
-'use client';
-
 import { Quicksand } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import './globals.css';
+import SessionProviderWrapper from './SessionProviderWrapper';
 
 const quicksand = Quicksand({
   weight: '400',
@@ -15,9 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={quicksand.className} data-theme="dark">
       <body>
-        <SessionProvider>
+        <SessionProviderWrapper>
           {children}
-        </SessionProvider>
+        </SessionProviderWrapper>
+        
       </body>
     </html>
   );
